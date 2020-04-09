@@ -18,10 +18,6 @@ io.on('connection', function(socket) {
   console.log('[IO] Connect => A new Connection in SERVER => ' + socket.id)
 
   socket.on('Generated New incident', data => {
-    console.log(data)
-    let id = generateUniqueId()
-    Object.assign(data, id)
-    console.log('Alterado => ' + data)
     io.sockets.emit('Send data', data)
   })
 })
