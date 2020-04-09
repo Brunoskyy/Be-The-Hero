@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import io from 'socket.io-client'
+
 import { Link, useHistory } from 'react-router-dom'
 import { FiPower, FiTrash2 } from 'react-icons/fi'
 
@@ -7,6 +9,15 @@ import api from '../../services/api'
 import './styles.css'
 
 import logoImg from '../../assets/logo.svg'
+
+const socket = io('http://localhost:3333')
+socket.on('connect', () => console.log('[IO] Connect => A new Connection in Profile'))
+
+
+// Recebe os dados enviados do Server em Real time, está fora da função para não ficar executando 2 vezes
+// socket.on('Send data', socketData => {
+//     console.log(socketData)
+// })
 
 export default function Profile() {
     const [incidents, setIncidents] = useState([])
@@ -24,6 +35,16 @@ export default function Profile() {
             setIncidents(response.data)
          })
      }, [ongId])
+
+     socket.on('Send data', socketData => {
+        api.get('/profile', {
+            headers: {
+                Authorization: ongId
+            }
+        }).then(response => {
+           setIncidents(response.data)
+        })
+    })
 
      async function handleDeleteIncident(id) {
          try {

@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import io from 'socket.io-client'
 
 import {Link, useHistory} from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi';
@@ -7,6 +8,9 @@ import './styles.css'
 
 import logoImg from '../../assets/logo.svg';
 import api from '../../services/api';
+  
+const socket = io('http://localhost:3333')
+socket.on('connect', () => console.log('[IO] Connect => A new Connection in New Incident'))
 
 export default function NewIncident(){
   const [title, setTitle] = useState('')
@@ -22,6 +26,7 @@ export default function NewIncident(){
 
     const data = {title, description, value}
 
+    socket.emit('Generated New incident', data)
     try {
       await api.post('incidents', data, {
         headers: {
