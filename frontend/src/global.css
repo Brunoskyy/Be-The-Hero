@@ -80,3 +80,13 @@ form textarea {
 .back-link:hover {
     opacity: 0.8;
 }
+.error {
+  color: #e02041;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.empty {
+  color: #737380;
+  margin-top: 24px;
+}
